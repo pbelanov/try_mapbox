@@ -26,8 +26,7 @@ var map = new mapboxgl.Map({
 
 map.on('load', function () {
 
-	var url = 'https://raw.githubusercontent.com/pbelanov/grid/master/grid.json';
-	// var url = 'file:///Users/taabepa1/Documents/jupyter/04_mapbox/grid.json';
+	var url = 'https://raw.githubusercontent.com/pbelanov/try_mapbox/master/grid.json';
 	map.addSource('grid', { type: 'geojson', data: url });
   map.addLayer({
       'id': 'grid',
