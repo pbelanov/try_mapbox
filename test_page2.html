@@ -16,6 +16,22 @@
 <body>
 
 <div id='map'></div>
+
+<div id='grid-legend' class='legend' style='display: none;'>
+    <h4>Values</h4>
+    <div><span style='background-color: #BF004B'></span>1.0</div>
+    <div><span style='background-color: #AB1651'></span>0.9</div>
+    <div><span style='background-color: #982D57'></span>0.8</div>
+    <div><span style='background-color: #85445E'></span>0.7</div>
+    <div><span style='background-color: #725B64'></span>0.6</div>
+    <div><span style='background-color: #5F726B'></span>0.5</div>
+    <div><span style='background-color: #4C8971'></span>0.4</div>
+    <div><span style='background-color: #39A077'></span>0.3</div>
+    <div><span style='background-color: #26B77E'></span>0.2</div>
+    <div><span style='background-color: #13CE84'></span>0.1</div>
+    <div><span style='background-color: #00E58B'></span>0.0</div>
+</div>
+
 <script>
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGJlbGFub3YiLCJhIjoiY2o0ZmExOWU1MGQ1ODJ4cnY1NzNmNTFydyJ9.d1FatRMukTPDwhIqBhEJGQ';
@@ -36,7 +52,7 @@ map.on('load', function () {
 		'layout': {},
 		'paint': {
 			'fill-color': {
-				property: 'regular-value',
+				property: 'random-value',
 				stops: [
 					[0.0, '#00E58B'],
 					[0.1, '#13CE84'],
