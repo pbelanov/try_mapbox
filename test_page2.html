@@ -141,6 +141,41 @@ map.on('load', function () {
 		[1.0, '#BF004B']
 	]
 
+  map.addLayer({
+		'id': 'sites',
+		'type': 'symbol',
+		'source': {
+			'type': 'geojson',
+			'data': {
+				'type': 'FeatureCollection',
+				'features': [{
+					'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [7.4, 47.2]
+					},
+					'properties': {
+						'description': 'Site ABCD',
+						'icon': 'castle'
+					}
+					}, {
+					'type': 'Feature',
+					'geometry': {
+						'type': 'Point',
+						'coordinates': [7.4, 47.1]
+					},
+					'properties': {
+						'description': 'Site WXYZ',
+						'icon': 'castle'
+					}
+				}]
+			}
+		},
+		'layout': {
+			'icon-image': '{icon}-15',
+		}
+  });
+
 	for (var i = 0; i < toggleableLayerIds.length; i++) {
 		var id = toggleableLayerIds[i];
 
