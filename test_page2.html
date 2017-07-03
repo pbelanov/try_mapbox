@@ -116,13 +116,19 @@ map.on('load', function () {
 	var url = 'https://raw.githubusercontent.com/pbelanov/try_mapbox/master/grid.json';
 	map.addSource('grid', { type: 'geojson', data: url });
 
+	// === layer lists =================================================
 	var pointLayerIds = [ 'sites' ];
 	var polygonLayerIds = [ 'random', 'regular' ];
 	var toggleableLayerIds = pointLayerIds.concat(polygonLayerIds);
 
+	// === legend ======================================================
 	var legend_stops = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
 	var legend_colours = ['#00E58B', '#13CE84', '#26B77E', '#39A077', '#4C8971', '#5F726B', '#725B64', '#85445E', '#982D57', '#AB1651', '#BF004B'];
-	
+
+	var stops = legend_stops.map(function (e, i) {  // zip the layer names and colours
+    return [e, legend_colours[i]];
+	});
+
 	for (i = 0; i < legend_stops.length; i++) {
 	  var layer = legend_stops[i];
 	  var color = legend_colours[i];
@@ -138,11 +144,7 @@ map.on('load', function () {
 	  legend.appendChild(item);
 	}
 	
-	// zip the layer names and colours
-	var stops = legend_stops.map(function (e, i) {
-    return [e, legend_colours[i]];
-	});
-
+	// === polygon layers ==============================================
 	for (var i = 0; i < polygonLayerIds.length; i++) {
 		var id = polygonLayerIds[i];
 
@@ -164,6 +166,7 @@ map.on('load', function () {
 		}, 'water');
 	}
 
+	// === point layers ================================================
 	for (var i = 0; i < pointLayerIds.length; i++) {
 		var id = pointLayerIds[i];
 
@@ -179,6 +182,7 @@ map.on('load', function () {
 		});
 	}
 
+	// === generic layer processing ====================================
 	for (var i = 0; i < toggleableLayerIds.length; i++) {
 		var id = toggleableLayerIds[i];
 
@@ -223,7 +227,7 @@ map.on('load', function () {
 		layers.appendChild(link);
 	}
 
-	// Dynamic fit to Switzerland
+	// === dynamic fit to Switzerland ==================================
 	map.fitBounds([[5.90, 45.75], [10.44, 47.85]]);
 
 });
