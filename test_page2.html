@@ -124,7 +124,9 @@ map.on('load', function () {
 	var url = 'https://raw.githubusercontent.com/pbelanov/try_mapbox/master/grid.json';
 	map.addSource('grid', { type: 'geojson', data: url });
 
-	var toggleableLayerIds = [ 'random', 'regular' ];
+	var pointLayerIds = [ 'sites' ];
+	var polygonLayerIds = [ 'random', 'regular' ];
+	var toggleableLayerIds = pointLayerIds.concat(polygonLayerIds);
 
 	// Has to correspond to the grid legend
 	var stops = [
@@ -141,19 +143,8 @@ map.on('load', function () {
 		[1.0, '#BF004B']
 	]
 
-	map.addLayer({
-		'id': 'sites',
-		'type': 'symbol',
-		'source': 'grid',
-		'filter': ['==', 'element_type', 'site'],
-		'layout': {
-			'visibility': 'visible',
-			'icon-image': 'castle-15'
-		}
-	});
-
-	for (var i = 0; i < toggleableLayerIds.length; i++) {
-		var id = toggleableLayerIds[i];
+	for (var i = 0; i < polygonLayerIds.length; i++) {
+		var id = polygonLayerIds[i];
 
 		map.addLayer({
 			'id': id,
@@ -171,6 +162,25 @@ map.on('load', function () {
 				'fill-opacity': 0.4
 			}
 		}, 'water');
+	}
+
+	for (var i = 0; i < pointLayerIds.length; i++) {
+		var id = pointLayerIds[i];
+
+		map.addLayer({
+			'id': id,
+			'type': 'symbol',
+			'source': 'grid',
+			'filter': ['==', 'element_type', 'site'],
+			'layout': {
+				'visibility': 'none',
+				'icon-image': 'castle-15'
+			}
+		});
+	}
+
+	for (var i = 0; i < toggleableLayerIds.length; i++) {
+		var id = toggleableLayerIds[i];
 
 	  map.on('click', id, function (e) {
 			new mapboxgl.Popup()
