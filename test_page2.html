@@ -183,6 +183,7 @@ map.on('load', function () {
 			'id': id,
 			'type': 'fill',
 			'source': 'grid',
+			'filter': ['==', 'element_type', 'gridpoint'],
 			'layout': {
 				'visibility': 'none'
 			},
