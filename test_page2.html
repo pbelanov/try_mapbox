@@ -126,64 +126,39 @@ map.on('load', function () {
 
 	var toggleableLayerIds = [ 'random', 'regular' ];
 
-	map.addLayer({
-		'id': 'random',
-		'type': 'fill',
-		'source': 'grid',
-		'layout': {
-			'visibility': 'none'
-		},
-		'paint': {
-			'fill-color': {
-				property: 'random-value',
-				stops: [
-					[0.0, '#00E58B'],
-					[0.1, '#13CE84'],
-					[0.2, '#26B77E'],
-					[0.3, '#39A077'],
-					[0.4, '#4C8971'],
-					[0.5, '#5F726B'],
-					[0.6, '#725B64'],
-					[0.7, '#85445E'],
-					[0.8, '#982D57'],
-					[0.9, '#AB1651'],
-					[1.0, '#BF004B']
-				]
-			},
-			'fill-opacity': 0.4
-		}
-	}, 'water');
-
-	map.addLayer({
-		'id': 'regular',
-		'type': 'fill',
-		'source': 'grid',
-		'layout': {
-			'visibility': 'none'
-		},
-		'paint': {
-			'fill-color': {
-				property: 'regular-value',
-				stops: [
-					[0.0, '#00E58B'],
-					[0.1, '#13CE84'],
-					[0.2, '#26B77E'],
-					[0.3, '#39A077'],
-					[0.4, '#4C8971'],
-					[0.5, '#5F726B'],
-					[0.6, '#725B64'],
-					[0.7, '#85445E'],
-					[0.8, '#982D57'],
-					[0.9, '#AB1651'],
-					[1.0, '#BF004B']
-				]
-			},
-			'fill-opacity': 0.4
-		}
-	}, 'water');
+	// Has to correspond to the grid legend
+	var stops = [
+		[0.0, '#00E58B'],
+		[0.1, '#13CE84'],
+		[0.2, '#26B77E'],
+		[0.3, '#39A077'],
+		[0.4, '#4C8971'],
+		[0.5, '#5F726B'],
+		[0.6, '#725B64'],
+		[0.7, '#85445E'],
+		[0.8, '#982D57'],
+		[0.9, '#AB1651'],
+		[1.0, '#BF004B']
+	]
 
 	for (var i = 0; i < toggleableLayerIds.length; i++) {
 		var id = toggleableLayerIds[i];
+
+		map.addLayer({
+			'id': id,
+			'type': 'fill',
+			'source': 'grid',
+			'layout': {
+				'visibility': 'none'
+			},
+			'paint': {
+				'fill-color': {
+					property: id,
+					stops: stops
+				},
+				'fill-opacity': 0.4
+			}
+		}, 'water');
 
 	  map.on('click', id, function (e) {
 			new mapboxgl.Popup()
