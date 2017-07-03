@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset='utf-8' />
-	<title>forsite</title>
+	<title>forsite atlas</title>
 	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js'></script>
 	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css' rel='stylesheet' />
@@ -46,7 +46,51 @@
 	font: 12px/20px 'TheSans Swisscom Light', Helvetica, sans-serif;
 }
 
+#menu {
+    background: #fff;
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    right: 10px;
+    border-radius: 3px;
+    width: 120px;
+    border: 1px solid rgba(0,0,0,0.4);
+    font-family: 'TheSans Swisscom Light', Helvetica, sans-serif;
+}
+
+#menu a {
+    font-size: 12px;
+    color: #404040;
+    display: block;
+    margin: 0;
+    padding: 0;
+    padding: 10px;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+    text-align: center;
+}
+
+#menu a:last-child {
+    border: none;
+}
+
+#menu a:hover {
+    background-color: #f8f8f8;
+    color: #404040;
+}
+
+#menu a.active {
+    background-color: #3887be;
+    color: #ffffff;
+}
+
+#menu a.active:hover {
+    background: #3074a4;
+}
+
 </style>
+
+<nav id="menu"></nav>
 
 <div id='map'></div>
 
@@ -81,10 +125,12 @@ map.on('load', function () {
 	map.addSource('grid', { type: 'geojson', data: url });
 
 	map.addLayer({
-		'id': 'grid',
+		'id': 'random',
 		'type': 'fill',
 		'source': 'grid',
-		'layout': {},
+		'layout': {
+			'visibility': 'none'
+		},
 		'paint': {
 			'fill-color': {
 				property: 'random-value',
@@ -106,20 +152,79 @@ map.on('load', function () {
 		}
 	}, 'water');
 
-  map.on('click', 'grid', function (e) {
+	map.addLayer({
+		'id': 'regular',
+		'type': 'fill',
+		'source': 'grid',
+		'layout': {
+			'visibility': 'none'
+		},
+		'paint': {
+			'fill-color': {
+				property: 'regular-value',
+				stops: [
+					[0.0, '#00E58B'],
+					[0.1, '#13CE84'],
+					[0.2, '#26B77E'],
+					[0.3, '#39A077'],
+					[0.4, '#4C8971'],
+					[0.5, '#5F726B'],
+					[0.6, '#725B64'],
+					[0.7, '#85445E'],
+					[0.8, '#982D57'],
+					[0.9, '#AB1651'],
+					[1.0, '#BF004B']
+				]
+			},
+			'fill-opacity': 0.4
+		}
+	}, 'water');
+
+  map.on('click', 'random', function (e) {
 		new mapboxgl.Popup()
 			.setLngLat(e.lngLat)
 			.setHTML(e.features[0].properties.description)
 			.addTo(map);
   });
 
-  map.on('mouseenter', 'grid', function () {
+  map.on('mouseenter', 'random', function () {
 		map.getCanvas().style.cursor = 'pointer';
   });
 
-  map.on('mouseleave', 'grid', function () {
+  map.on('mouseleave', 'random', function () {
 		map.getCanvas().style.cursor = '';
   });
+
+	var toggleableLayerIds = [ 'random', 'regular' ];
+
+	for (var i = 0; i < toggleableLayerIds.length; i++) {
+		var id = toggleableLayerIds[i];
+
+		var link = document.createElement('a');
+		link.href = '#';
+		link.className = '';
+		link.visibility = 'none';
+		link.textContent = id;
+
+		link.onclick = function (f) {
+			var clickedLayer = this.textContent;
+			f.preventDefault();
+			f.stopPropagation();
+
+			var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+			if (visibility === 'visible') {
+				map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+				this.className = '';
+			} else {
+				this.className = 'active';
+				map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+			}
+		};
+
+		var layers = document.getElementById('menu');
+		layers.appendChild(link);
+	}
 
 });
 
