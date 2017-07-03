@@ -124,6 +124,8 @@ map.on('load', function () {
 	var url = 'https://raw.githubusercontent.com/pbelanov/try_mapbox/master/grid.json';
 	map.addSource('grid', { type: 'geojson', data: url });
 
+	var toggleableLayerIds = [ 'random', 'regular' ];
+
 	map.addLayer({
 		'id': 'random',
 		'type': 'fill',
@@ -180,40 +182,23 @@ map.on('load', function () {
 		}
 	}, 'water');
 
-  map.on('click', 'random', function (e) {
-		new mapboxgl.Popup()
-			.setLngLat(e.lngLat)
-			.setHTML(e.features[0].properties.description)
-			.addTo(map);
-  });
-
-  map.on('mouseenter', 'random', function () {
-		map.getCanvas().style.cursor = 'pointer';
-  });
-
-  map.on('mouseleave', 'random', function () {
-		map.getCanvas().style.cursor = '';
-  });
-
-  map.on('click', 'regular', function (e) {
-		new mapboxgl.Popup()
-			.setLngLat(e.lngLat)
-			.setHTML(e.features[0].properties.description)
-			.addTo(map);
-  });
-
-  map.on('mouseenter', 'regular', function () {
-		map.getCanvas().style.cursor = 'pointer';
-  });
-
-  map.on('mouseleave', 'regular', function () {
-		map.getCanvas().style.cursor = '';
-  });
-
-	var toggleableLayerIds = [ 'random', 'regular' ];
-
 	for (var i = 0; i < toggleableLayerIds.length; i++) {
 		var id = toggleableLayerIds[i];
+
+	  map.on('click', id, function (e) {
+			new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(e.features[0].properties.description)
+				.addTo(map);
+	  });
+
+	  map.on('mouseenter', id, function () {
+			map.getCanvas().style.cursor = 'pointer';
+	  });
+
+	  map.on('mouseleave', id, function () {
+			map.getCanvas().style.cursor = '';
+	  });
 
 		var link = document.createElement('a');
 		link.href = '#';
