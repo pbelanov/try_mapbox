@@ -195,6 +195,21 @@ map.on('load', function () {
 		map.getCanvas().style.cursor = '';
   });
 
+  map.on('click', 'regular', function (e) {
+		new mapboxgl.Popup()
+			.setLngLat(e.lngLat)
+			.setHTML(e.features[0].properties.description)
+			.addTo(map);
+  });
+
+  map.on('mouseenter', 'regular', function () {
+		map.getCanvas().style.cursor = 'pointer';
+  });
+
+  map.on('mouseleave', 'regular', function () {
+		map.getCanvas().style.cursor = '';
+  });
+
 	var toggleableLayerIds = [ 'random', 'regular' ];
 
 	for (var i = 0; i < toggleableLayerIds.length; i++) {
